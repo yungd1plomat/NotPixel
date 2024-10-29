@@ -171,7 +171,7 @@ class NotPixel:
                             user_tasks = status["tasks"]
                             for task in config.tasks:
                                 if task not in user_tasks.keys():
-                                    await self.analytics_event('app-hide')
+                                    #await self.analytics_event('app-hide')
                                     if task.startswith("x:"):
                                         await asyncio.sleep(random.uniform(*config.TASK_SLEEP))
                                         await self.do_task(task.split(":")[1], "x")
@@ -399,7 +399,7 @@ class NotPixel:
             self.app_user = await self.me()
             if not self.app_user:
                 return False
-            await self.analytics_event('app-init')
+            #await self.analytics_event('app-init')
             self.global_map = await self.get_global_map()
             self.ws_task = asyncio.create_task(self.receive_ws())
             return True
