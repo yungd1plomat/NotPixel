@@ -33,15 +33,17 @@ DO_PAINT = True
 DO_UPGRADES = True
 DO_TASKS = True
 
+USE_RANDOM_TEMPLATE = True
+
 tasks = {"x:notcoin", "x:notpixel", "channel:notcoin", "channel:notpixel_channel", "makePixelAvatar", "paint20pixels",
-         "jettonTask", "boinkTask"}
+         "jettonTask", "boinkTask", "pixelInNickname"}
 
 
 
 max_limits = {"energyLimit": 7, "paintReward": 7, "reChargeSpeed": 9}
 levels = {"energyLimit": {1: 5, 2: 100, 3: 200, 4: 300, 5: 400, 6: 10},
           "paintReward": {1: 5, 2: 100, 3: 200, 4: 300, 5: 500, 6: 600},
-          "reChargeSpeed": {1: 5, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700}}
+          "reChargeSpeed": {1: 5, 2: 100, 3: 200, 4: 300, 5: 400, 6: 500, 7: 600, 8: 700, 9: 800, 10: 900}}
 
 BAD_RESPONSES = [500, 502, 504, 524]
 

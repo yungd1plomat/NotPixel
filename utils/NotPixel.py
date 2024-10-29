@@ -103,11 +103,11 @@ class NotPixel:
                     if self.ws_task:
                         self.ws_task.cancel()
                     continue
-
                 status = await self.status()
+                random_template_chosen = False
                 while True:
-                    template_info = await self.my() # информация о выбранном шаблоне
-                    if template_info == {} or not template_info: # если шаблон не установлен , происходит его установка
+                    template_info = await self.my()
+                    if template_info == {} or not template_info or (config.USE_RANDOM_TEMPLATE and not random_template_chosen):
                         await self.event({"n": "pageview", "u": "https://app.notpx.app/template", "d": "notpx.app",
                                         "r": None})
 
@@ -122,6 +122,7 @@ class NotPixel:
                             await asyncio.sleep(random.uniform(3, 5))
                             await self.choose_template(template_id)
                             logger.success(f"main | Thread {self.thread} | {self.name} | Template installed!")
+                            random_template_chosen = True
                             continue
                         raise Exception("Template installation failed")
                     else:
@@ -141,9 +142,8 @@ class NotPixel:
                             if not y_cord_list:
                                 raise Exception("Template already full painted")
 
-                            # Выбираем цвет преимущественно либо в начале, либо в конце мапы
-                            weights = [2 if i < 15 or i >= size - 15 else 1 for i in range(len(y_cord_list))]
-                            y = random.choices(y_cord_list, weights=weights, k=1)[0]
+                            # Предыдущая реализация хуйня, выбираем место рандомно
+                            y = random.choices(y_cord_list)[0]
                             y_cord_list.remove(y)
 
                             for x in range(x_cord, x_cord + size):
@@ -181,6 +181,11 @@ class NotPixel:
                                         await self.client.disconnect()
                                         await asyncio.sleep(random.uniform(*config.TASK_SLEEP))
                                         await self.do_task(task.split(":")[1], "channel")
+                                    elif task == "pixelInNickname":
+                                        if not self.user_info.first_name.contains('▪️'):
+                                            async with self.client:
+                                                await self.client.update_profile(first_name = self.user_info.first_name + '▪️')
+                                        await self.do_task(task)
                                     else:
                                         await asyncio.sleep(random.uniform(*config.TASK_SLEEP))
                                         await self.do_task(task)
@@ -408,7 +413,7 @@ class NotPixel:
             socket = await self.ws_session.ws_connect('wss://notpx.app/connection/websocket')
             auth_request = b'\xcb\x01\x08\x01"\xc6\x01\n\xbf\x01' + ws_token.encode('utf-8') + b'"\x02js'
             await asyncio.to_thread(socket.send, auth_request)
-            logger.success(f'task | Thread {self.thread} | {self.name} | Websocket connected succesfully')
+            logger.success(f'WS | Thread {self.thread} | {self.name} | Websocket connected succesfully')
             while True:
                 msg, _ = await asyncio.to_thread(socket.recv)
                 # ping
