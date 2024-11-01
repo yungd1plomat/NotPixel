@@ -173,20 +173,28 @@ class NotPixel:
                                 if task not in user_tasks.keys():
                                     await self.analytics_event('app-hide')
                                     if task.startswith("x:"):
+                                        await self.event({"n": task.split(":")[1], "u": "https://app.notpx.app/claiming", "d": "notpx.app", 
+                                                          "r": None, "p": {"country": "RU"}})
                                         await asyncio.sleep(random.uniform(*config.TASK_SLEEP))
                                         await self.do_task(task.split(":")[1], "x")
                                     elif task.startswith("channel:"):
+                                        await self.event({"n": task.split(":")[1], "u": "https://app.notpx.app/claiming", "d": "notpx.app", 
+                                                          "r": None, "p": {"country": "RU"}})
                                         await self.client.connect()
                                         await self.client.join_chat(task.split(":")[1])
                                         await self.client.disconnect()
                                         await asyncio.sleep(random.uniform(*config.TASK_SLEEP))
                                         await self.do_task(task.split(":")[1], "channel")
                                     elif task == "pixelInNickname":
+                                        await self.event({"n": task.split(":")[1], "u": "https://app.notpx.app/claiming", "d": "notpx.app", 
+                                                          "r": None, "p": {"country": "RU"}})
                                         if not self.user_info.first_name.contains('▪️'):
                                             async with self.client:
                                                 await self.client.update_profile(first_name = self.user_info.first_name + '▪️')
                                         await self.do_task(task)
                                     else:
+                                        await self.event({"n": task, "u": "https://app.notpx.app/claiming", "d": "notpx.app", 
+                                                          "r": None, "p": {"country": "RU"}})
                                         await asyncio.sleep(random.uniform(*config.TASK_SLEEP))
                                         await self.do_task(task)
 
